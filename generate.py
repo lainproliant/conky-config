@@ -1,9 +1,18 @@
 #!/usr/bin/env python3
 
+import json
+import os
 import re
 import subprocess
 from pathlib import Path
+
 from jinja2 import Template
+
+
+# -------------------------------------------------------------------
+def load_font_config():
+    with open(os.path.expanduser("~/.font/config.json"), "r") as infile:
+        return json.load(infile)
 
 
 # -------------------------------------------------------------------
@@ -38,6 +47,7 @@ def load_template(filename):
 def main():
     jinja_rc_files = Path.home().glob('.conky/rc/*.jinja')
     existing_rc_files = Path.home().glob('.conky/rc/*.rc')
+    font_config = load_font_config()
     for rc_file in existing_rc_files:
         rc_file.unlink()
 
@@ -47,7 +57,7 @@ def main():
             rc_file = jinja_rc_file.with_suffix('.screen-%d.rc' % screen)
             print('Writing %s' % rc_file)
             with open(rc_file, 'w') as outfile:
-                print(template.render(screen=screen, **BASE16), file=outfile)
+                print(template.render(screen=screen, **BASE16, **font_config), file=outfile)
 
 
 # -------------------------------------------------------------------
