@@ -8,8 +8,8 @@
 -- Based on code by londonali1010 (2009)
 --
 
-corner_r=20
-bg_colour=0xA08080
+corner_r=100
+bg_colour=0x000000
 bg_alpha=0.80
 
 require 'cairo'
